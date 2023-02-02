@@ -1,27 +1,46 @@
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const list = [
+    "Apple",
+    "Mango",
+    "Watermelon",
+    "Banana",
+    "Orange",
+    "Strawberry",
+  ];
+
+  const [filteredList, setFilteredList] = useState(list);
+
+  const searchFilterHandler = (event) => {
+    console.log(event.target.value)
+    if (event.target.value === "") {
+      setFilteredList(list);
+    }
+
+    const value = list.filter(
+      (item) =>
+        item.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
+    );
+    setFilteredList(value);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      <input onChange={searchFilterHandler} />
+      <div>
+        <ul>
+          {filteredList &&
+            filteredList.map((item) => {
+              return (
+                <li key={item} style={{ listStyleType: "none" }}>
+                  {item}
+                </li>
+              );
+            })}
+        </ul>
+      </div>
     </div>
   );
 }
